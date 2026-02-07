@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAMS - Login</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body class="bg">
+    <div class="card auth-card" style="animation: fadeInUp 0.5s ease;">
+        <h1>Finance Asset Management</h1>
+        <p class="muted">Secure login for Admin, Manager, Employee, and Investor</p>
+
+        <form id="loginForm">
+            <label>Email</label>
+            <input type="email" id="email" required placeholder="Enter your email" autocomplete="email" />
+
+            <label>Password</label>
+            <div style="position: relative;">
+                <input type="password" id="password" required placeholder="Enter your password"
+                    autocomplete="current-password" style="padding-right: 50px;" />
+                <button type="button" onclick="togglePassword()"
+                    style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); width: auto; padding: 8px 12px; background: transparent; box-shadow: none; font-size: 1.2rem; margin: 0;"
+                    title="Toggle password visibility">👁️</button>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+            <button type="button" onclick="toggleCredentials()"
+                style="width: 100%; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); padding: 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.3s ease;">
+                <span class="muted" style="font-weight: 600;">Demo Credentials</span>
+                <span id="credToggleIcon" style="font-size: 1.2rem; transition: transform 0.3s ease;">👁️</span>
+            </button>
+            <div id="credentialsBox"
+                style="display: grid; gap: 8px; text-align: left; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; opacity: 0;">
+                <p class="muted" style="font-size: 0.85rem;">👨‍💼 Admin: <code
+                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">admin@fams.com</code>
+                    / <code
+                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">admin123</code>
+                </p>
+                <p class="muted" style="font-size: 0.85rem;">👔 Manager: <code
+                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">manager@fams.com</code>
+                    / <code
+                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">manager123</code>
+                </p>
+                <p class="muted" style="font-size: 0.85rem;">👤 Employee: <code
+                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">employee@fams.com</code>
+                    / <code
+                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">employee123</code>
+                </p>
+                <p class="muted" style="font-size: 0.85rem;">💼 Investor: <code
+                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">investor@fams.com</code>
+                    / <code
+                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">investor123</code>
+                </p>
+            </div>
+        </div>
+
+        <div id="loginMsg" class="muted" style="margin-top: 16px; color: var(--danger);"></div>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const button = event.target;
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                button.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                button.textContent = '👁️';
+            }
+        }
+
+        function toggleCredentials() {
+            const credBox = document.getElementById('credentialsBox');
+            const icon = document.getElementById('credToggleIcon');
+
+            if (credBox.style.maxHeight === '0px' || credBox.style.maxHeight === '') {
+                // Show credentials
+                credBox.style.maxHeight = '300px';
+                credBox.style.opacity = '1';
+                icon.textContent = '🙈';
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                // Hide credentials
+                credBox.style.maxHeight = '0px';
+                credBox.style.opacity = '0';
+                icon.textContent = '👁️';
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+    </script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

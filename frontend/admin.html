@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAMS - Admin Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body class="bg">
+    <div class="container">
+        <header class="topbar" style="animation: fadeInUp 0.3s ease;">
+            <div>
+                <h2 style="margin: 0;">Admin Dashboard</h2>
+                <p class="muted" style="margin: 0; font-size: 0.85rem;">Manage assets, users, and transactions</p>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <button type="button" onclick="window.location.href='profile.html'"
+                    style="background: var(--accent); width: auto; padding: 10px 20px;">👤 Profile</button>
+                <button onclick="logout()">Logout</button>
+            </div>
+        </header>
+
+
+        <section class="grid" style="animation: fadeInUp 0.4s ease;">
+            <div class="card">
+                <h3>Create Asset</h3>
+                <form id="assetForm">
+                    <input placeholder="Asset Code" id="assetCode" required />
+                    <input placeholder="Name" id="assetName" required />
+                    <select id="assetCategory" required>
+                        <option value="">Loading...</option>
+                    </select>
+                    <label>Purchase Date</label>
+                    <input type="date" id="purchaseDate" required />
+                    <input placeholder="Purchase Value (₹)" id="purchaseValue" type="number" min="0" step="0.01"
+                        required />
+                    <input placeholder="Current Value (₹)" id="currentValue" type="number" min="0" step="0.01"
+                        required />
+                    <input placeholder="Owner User ID" id="ownerId" type="number" min="1" required />
+
+                    <!-- Depreciation Fields -->
+                    <label style="margin-top: 16px; font-weight: 600; color: var(--primary);">📉 Depreciation Settings
+                        (Optional)</label>
+                    <select id="depreciationMethod">
+                        <option value="">No Depreciation</option>
+                        <option value="STRAIGHT_LINE">Straight Line Method</option>
+                        <option value="REDUCING_BALANCE">Reducing Balance Method (20%)</option>
+                    </select>
+                    <input placeholder="Useful Life (Years)" id="usefulLife" type="number" min="1" max="100" />
+                    <input placeholder="Salvage Value (₹)" id="salvageValue" type="number" min="0" step="0.01" />
+
+                    <button type="submit">💾 Create Asset</button>
+                </form>
+                <div id="assetMsg" class="muted"></div>
+            </div>
+
+            <div class="card">
+                <h3>Create Transaction</h3>
+                <form id="txForm">
+                    <input placeholder="Asset ID" id="txAssetId" type="number" min="1" required />
+                    <select id="txType" required>
+                        <option>BUY</option>
+                        <option>SELL</option>
+                        <option>TRANSFER</option>
+                        <option>WITHDRAWAL</option>
+                    </select>
+                    <input placeholder="Quantity" id="txQty" type="number" min="1" value="1" />
+                    <input placeholder="Price (₹)" id="txPrice" type="number" min="0" step="0.01" />
+                    <input placeholder="From User ID (optional)" id="txFrom" type="number" min="1" />
+                    <input placeholder="To User ID (optional)" id="txTo" type="number" min="1" />
+                    <input placeholder="Notes (optional)" id="txNotes" maxlength="500" />
+                    <button type="submit">Create Transaction</button>
+                </form>
+                <div id="txMsg" class="muted"></div>
+            </div>
+        </section>
+
+        <section class="card" style="animation: fadeInUp 0.5s ease;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="margin: 0;">Users</h3>
+                <button type="button" onclick="loadUsers()" style="width: auto; padding: 10px 20px;">🔄 Refresh</button>
+            </div>
+            <div class="table-container">
+                <table id="userTable">
+                    <tbody>
+                        <tr>
+                            <td colspan="4" class="empty-state">
+                                <div class="skeleton" style="height: 40px;"></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="card" style="animation: fadeInUp 0.6s ease;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="margin: 0;">Assets</h3>
+                <button type="button" onclick="loadAssets()" style="width: auto; padding: 10px 20px;">🔄
+                    Refresh</button>
+            </div>
+            <div class="table-container">
+                <table id="assetTable">
+                    <tbody>
+                        <tr>
+                            <td colspan="5" class="empty-state">
+                                <div class="skeleton" style="height: 40px;"></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="card" style="animation: fadeInUp 0.7s ease;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="margin: 0;">Transactions</h3>
+                <button type="button" onclick="loadTransactions()" style="width: auto; padding: 10px 20px;">🔄
+                    Refresh</button>
+            </div>
+            <div class="table-container">
+                <table id="txTable">
+                    <tbody>
+                        <tr>
+                            <td colspan="6" class="empty-state">
+                                <div class="skeleton" style="height: 40px;"></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="card" style="animation: fadeInUp 0.8s ease;">
+            <h3>Reports</h3>
+            <div class="row" style="flex-wrap: wrap;">
+                <button onclick="loadReports()" style="width: auto;">📊 Load Reports</button>
+                <button type="button" onclick="downloadReportPdf('asset-utilization')" style="width: auto;">📄 Asset
+                    Utilization PDF</button>
+                <button type="button" onclick="downloadReportPdf('profit-loss')" style="width: auto;">📄 Profit & Loss
+                    PDF</button>
+                <button type="button" onclick="downloadReportPdf('balance-sheet')" style="width: auto;">📄 Balance Sheet
+                    PDF</button>
+            </div>
+            <pre id="reportBox" style="max-height: 400px; overflow-y: auto; margin-top: 20px;"></pre>
+        </section>
+    </div>
+    <script src="js/depreciation.js"></script>
+    <script src="js/receipt.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

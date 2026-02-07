@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAMS - Login Test</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body class="bg">
+    <div class="card auth-card">
+        <h1>Finance Asset Management</h1>
+        <p class="muted">Secure login for Admin and Investor</p>
+
+        <form id="loginForm">
+            <label>Email</label>
+            <input type="email" id="email" value="admin@fams.com" required />
+            <label>Password</label>
+            <input type="password" id="password" value="admin123" required />
+            <button type="submit">Login</button>
+        </form>
+
+        <p class="muted">Demo Logins</p>
+        <p class="muted"><strong>Admin:</strong> admin@fams.com / admin123</p>
+        <p class="muted"><strong>Investor:</strong> investor@fams.com / investor123</p>
+        <div id="loginMsg" class="muted" style="margin-top: 10px; color: #f59e0b; font-weight: 600;"></div>
+    </div>
+    <script src="js/app.js"></script>
+    <script>
+        // Debug logging
+        console.log('Page loaded');
+        console.log('Form element:', document.getElementById('loginForm'));
+        console.log('API_BASE from app.js should be: http://localhost:8080/api');
+    </script>
+</body>
+
+</html>

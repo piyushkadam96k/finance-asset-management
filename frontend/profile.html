@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAMS - My Profile</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body class="bg">
+    <div class="container" style="max-width: 800px;">
+        <header class="topbar" style="animation: fadeInUp 0.3s ease;">
+            <div>
+                <h2 style="margin: 0;">👤 My Profile</h2>
+                <p class="muted" style="margin: 0; font-size: 0.85rem;">Manage your account settings</p>
+            </div>
+            <button type="button" onclick="window.history.back()"
+                style="background: var(--secondary); width: auto; padding: 10px 20px;">← Back</button>
+        </header>
+
+        <!-- Profile Information -->
+        <section class="card" style="animation: fadeInUp 0.4s ease;">
+            <h3>📋 Profile Information</h3>
+            <div id="profileInfo" style="margin-bottom: 20px;">
+                <div class="skeleton" style="height: 100px;"></div>
+            </div>
+        </section>
+
+        <!-- Edit Profile Form -->
+        <section class="card" style="animation: fadeInUp 0.5s ease;">
+            <h3>✏️ Edit Profile</h3>
+            <form id="profileForm">
+                <label>Full Name</label>
+                <input type="text" id="fullName" placeholder="Enter your full name" required />
+
+                <label>Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email" required />
+
+                <label>Phone Number (Optional)</label>
+                <input type="tel" id="phone" placeholder="Enter your phone number" />
+
+                <button type="submit">💾 Update Profile</button>
+            </form>
+            <div id="profileMsg" class="muted" style="margin-top: 12px;"></div>
+        </section>
+
+        <!-- Change Password -->
+        <section class="card" style="animation: fadeInUp 0.6s ease;">
+            <h3>🔒 Change Password</h3>
+            <form id="passwordForm">
+                <label>Current Password</label>
+                <input type="password" id="currentPassword" placeholder="Enter current password" required />
+
+                <label>New Password</label>
+                <input type="password" id="newPassword" placeholder="Enter new password" minlength="6" required />
+
+                <label>Confirm New Password</label>
+                <input type="password" id="confirmPassword" placeholder="Confirm new password" minlength="6" required />
+
+                <button type="submit">🔐 Change Password</button>
+            </form>
+            <div id="passwordMsg" class="muted" style="margin-top: 12px;"></div>
+        </section>
+
+        <!-- Account Details -->
+        <section class="card" style="animation: fadeInUp 0.7s ease;">
+            <h3>ℹ️ Account Details</h3>
+            <div id="accountDetails" style="display: grid; gap: 12px;">
+                <div class="skeleton" style="height: 60px;"></div>
+            </div>
+        </section>
+    </div>
+    <script src="js/app.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+
+</html>
