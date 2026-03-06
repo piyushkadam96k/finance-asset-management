@@ -598,3 +598,5 @@ app.listen(PORT, () => {
   console.log(`  Employee: employee@trikut.com / password`);
   console.log(`  Investor: investor@trikut.com / password`);
 });
+
+module.exports = app;
