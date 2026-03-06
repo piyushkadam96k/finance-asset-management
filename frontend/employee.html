@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAMS - Employee Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body class="bg">
+    <div class="container">
+        <header class="topbar" style="animation: fadeInUp 0.3s ease;">
+            <div>
+                <h2 style="margin: 0;">Employee Dashboard</h2>
+                <p class="muted" style="margin: 0; font-size: 0.85rem;">View assets and your transactions</p>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <button type="button" onclick="window.location.href='profile.html'"
+                    style="background: var(--accent); width: auto; padding: 10px 20px;">👤 Profile</button>
+                <button onclick="logout()">Logout</button>
+            </div>
+        </header>
+
+        <section class="card" style="animation: fadeInUp 0.4s ease;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="margin: 0;">Your Assigned Assets</h3>
+                <button type="button" onclick="loadAssets()" style="width: auto; padding: 10px 20px;">🔄
+                    Refresh</button>
+            </div>
+            <div class="table-container">
+                <table id="assetTable">
+                    <tbody>
+                        <tr>
+                            <td colspan="5" class="empty-state">
+                                <div class="skeleton" style="height: 40px;"></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="card" style="animation: fadeInUp 0.5s ease;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="margin: 0;">Your Transactions</h3>
+                <button type="button" onclick="loadTransactions()" style="width: auto; padding: 10px 20px;">🔄
+                    Refresh</button>
+            </div>
+            <div class="table-container">
+                <table id="txTable">
+                    <tbody>
+                        <tr>
+                            <td colspan="6" class="empty-state">
+                                <div class="skeleton" style="height: 40px;"></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+    <script src="js/app.js"></script>
+    <script src="js/employee.js"></script>
+</body>
+
+</html>

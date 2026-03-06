@@ -1,4 +1,7 @@
-﻿const API_BASE = "http://localhost:8080/api";
+﻿// Auto-detect API base: use same origin if served from backend, otherwise fallback to localhost:8080
+const API_BASE = (window.location.port === '8080' || window.location.port === '')
+    ? window.location.origin + '/api'
+    : 'http://localhost:8080/api';
 
 function setToken(token) {
     localStorage.setItem("token", token);
@@ -34,7 +37,11 @@ function createToastContainer() {
 }
 
 // Loading overlay
+let activeRequestCount = 0;
+let loadingTimeout = null;
+
 function showLoading() {
+    activeRequestCount++;
     let overlay = document.getElementById('loadingOverlay');
     if (!overlay) {
         overlay = document.createElement('div');
@@ -43,13 +50,32 @@ function showLoading() {
         overlay.innerHTML = '<div class="spinner"></div>';
         document.body.appendChild(overlay);
     }
-    setTimeout(() => overlay.classList.add('show'), 10);
+
+    // Clear any pending hides
+    if (loadingTimeout) {
+        clearTimeout(loadingTimeout);
+        loadingTimeout = null;
+    }
+
+    // Immediate show if not already showing
+    if (!overlay.classList.contains('show')) {
+        overlay.classList.add('show');
+    }
 }
 
 function hideLoading() {
-    const overlay = document.getElementById('loadingOverlay');
-    if (overlay) {
-        overlay.classList.remove('show');
+    activeRequestCount = Math.max(0, activeRequestCount - 1);
+
+    if (activeRequestCount === 0) {
+        const overlay = document.getElementById('loadingOverlay');
+        if (overlay) {
+            // Tiny delay to prevent flashing between immediate sequential requests
+            loadingTimeout = setTimeout(() => {
+                if (activeRequestCount === 0) {
+                    overlay.classList.remove('show');
+                }
+            }, 50);
+        }
     }
 }
 
@@ -71,8 +97,10 @@ async function apiRequest(path, method = "GET", body = null, retries = 2) {
 
                 // Handle specific error codes
                 if (res.status === 401) {
-                    showToast('Session expired. Please login again.', 'error');
-                    setTimeout(() => logout(), 1500);
+                    showToast('Invalid credentials or session expired.', 'error');
+                    if (path !== "/auth/login") {
+                        setTimeout(() => logout(), 1500);
+                    }
                     throw new Error('Unauthorized');
                 }
 
@@ -96,12 +124,12 @@ async function apiRequest(path, method = "GET", body = null, retries = 2) {
             return res.text();
 
         } catch (err) {
+            if (err.message === 'Unauthorized' || err.message === 'Forbidden') {
+                throw err;
+            }
+
             if (attempt === retries) {
                 // All retries exhausted
-                if (err.message === 'Unauthorized' || err.message === 'Forbidden') {
-                    throw err;
-                }
-
                 if (err.name === 'TypeError' || err.message.includes('Failed to fetch')) {
                     showToast('Network error. Please check your connection.', 'error');
                     throw new Error('Network error');
@@ -179,8 +207,10 @@ if (loginForm) {
                     window.location.href = "investor.html";
                 } else if (data.user.role.includes("MANAGER")) {
                     window.location.href = "manager.html";
+                } else if (data.user.role.includes("EMPLOYEE")) {
+                    window.location.href = "employee.html";
                 } else {
-                    // Admin, Employee, or other roles
+                    // Admin or other generic roles
                     window.location.href = "admin.html";
                 }
             }, 500);

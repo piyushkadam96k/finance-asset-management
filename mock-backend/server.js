@@ -1,45 +1,54 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5500', 'http://127.0.0.1:5500'],
+  origin: true,
   credentials: true
 }));
 app.use(express.json());
+
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, '..', 'frontend')));
+
+// Redirect root to index.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
+});
 
 // Mock Data
 const mockUsers = [
   {
     id: 1,
-    email: 'admin@fams.com',
-    password: 'admin123',
+    email: 'admin@trikut.com',
+    password: 'password',
     name: 'Admin User',
     role: 'ADMIN'
   },
   {
     id: 2,
-    email: 'investor@fams.com',
-    password: 'investor123',
+    email: 'investor@trikut.com',
+    password: 'password',
     name: 'Rajesh Kumar',
     role: 'INVESTOR'
   },
   {
     id: 3,
-    email: 'priya@fams.com',
-    password: 'investor123',
+    email: 'manager@trikut.com',
+    password: 'password',
     name: 'Priya Sharma',
-    role: 'INVESTOR'
+    role: 'MANAGER'
   },
   {
     id: 4,
-    email: 'amit@fams.com',
-    password: 'investor123',
+    email: 'employee@trikut.com',
+    password: 'password',
     name: 'Amit Patel',
-    role: 'INVESTOR'
+    role: 'EMPLOYEE'
   }
 ];
 
@@ -373,6 +382,26 @@ app.get('/api/users', (req, res) => {
   res.json(usersWithRoles);
 });
 
+// Update user profile
+app.put('/api/users/me', (req, res) => {
+  const { fullName, email, phone } = req.body;
+  // Update the first user (mock - in real app would use auth token)
+  if (fullName) mockUsers[0].name = fullName;
+  if (email) mockUsers[0].email = email;
+  if (phone) mockUsers[0].phone = phone;
+
+  res.json({
+    ...mockUsers[0],
+    fullName: mockUsers[0].name,
+    roles: [{ name: mockUsers[0].role }]
+  });
+});
+
+// Change password
+app.put('/api/users/me/password', (req, res) => {
+  res.json({ message: 'Password updated successfully' });
+});
+
 // Asset Endpoints
 app.get('/api/assets', (req, res) => {
   const assetsWithCategory = mockAssets.map(a => ({
@@ -462,6 +491,31 @@ app.post('/api/transactions', (req, res) => {
   });
 });
 
+app.put('/api/transactions/:id', (req, res) => {
+  const tId = parseInt(req.params.id);
+  const txIndex = mockTransactions.findIndex(t => t.id === tId);
+
+  if (txIndex === -1) {
+    return res.status(404).json({ error: "Transaction not found" });
+  }
+
+  // Update fields if provided
+  if (req.body.price !== undefined) mockTransactions[txIndex].price = req.body.price;
+  if (req.body.quantity !== undefined) mockTransactions[txIndex].quantity = req.body.quantity;
+  if (req.body.notes !== undefined) mockTransactions[txIndex].notes = req.body.notes;
+  // Recalculate amount based on new price and quantity
+  if (req.body.price !== undefined || req.body.quantity !== undefined) {
+    mockTransactions[txIndex].amount = mockTransactions[txIndex].price * mockTransactions[txIndex].quantity;
+  }
+
+  res.json({
+    ...mockTransactions[txIndex],
+    referenceNo: `TXN${String(tId).padStart(5, '0')}`,
+    asset: mockAssets.find(a => a.id === mockTransactions[txIndex].assetId),
+    transactionDate: mockTransactions[txIndex].date
+  });
+});
+
 // Portfolio Endpoints
 app.get('/api/portfolio/summary/:userId', (req, res) => {
   const totalValue = mockAssets.reduce((sum, asset) => sum + asset.currentValue, 0);
@@ -536,9 +590,11 @@ app.get('/health', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Mock FAMS Backend running on http://localhost:${PORT}`);
-  console.log(`📊 Ready to serve frontend at http://localhost:5500`);
+  console.log(`🚀 FAMS is running at http://localhost:${PORT}`);
+  console.log(`📊 Open the above URL in your browser to use the app`);
   console.log(`\nTest credentials:`);
-  console.log(`  Admin: admin@fams.com / admin123`);
-  console.log(`  Investor: investor@fams.com / investor123`);
+  console.log(`  Admin: admin@trikut.com / password`);
+  console.log(`  Manager: manager@trikut.com / password`);
+  console.log(`  Employee: employee@trikut.com / password`);
+  console.log(`  Investor: investor@trikut.com / password`);
 });

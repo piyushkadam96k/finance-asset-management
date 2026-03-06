@@ -29,7 +29,8 @@
             <button type="submit">Login</button>
         </form>
 
-        <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+        <div id="demoCredentialsSection"
+            style="display: none; margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
             <button type="button" onclick="toggleCredentials()"
                 style="width: 100%; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); padding: 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.3s ease;">
                 <span class="muted" style="font-weight: 600;">Demo Credentials</span>
@@ -38,24 +39,24 @@
             <div id="credentialsBox"
                 style="display: grid; gap: 8px; text-align: left; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; opacity: 0;">
                 <p class="muted" style="font-size: 0.85rem;">👨‍💼 Admin: <code
-                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">admin@fams.com</code>
+                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">admin@trikut.com</code>
                     / <code
-                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">admin123</code>
+                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">password</code>
                 </p>
                 <p class="muted" style="font-size: 0.85rem;">👔 Manager: <code
-                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">manager@fams.com</code>
+                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">manager@trikut.com</code>
                     / <code
-                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">manager123</code>
+                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">password</code>
                 </p>
                 <p class="muted" style="font-size: 0.85rem;">👤 Employee: <code
-                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">employee@fams.com</code>
+                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">employee@trikut.com</code>
                     / <code
-                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">employee123</code>
+                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">password</code>
                 </p>
                 <p class="muted" style="font-size: 0.85rem;">💼 Investor: <code
-                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">investor@fams.com</code>
+                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">investor@trikut.com</code>
                     / <code
-                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">investor123</code>
+                        style="background: rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 4px; color: var(--primary-light);">password</code>
                 </p>
             </div>
         </div>
@@ -64,6 +65,8 @@
     </div>
 
     <script>
+        let eyeClickCount = 0;
+
         function togglePassword() {
             const passwordInput = document.getElementById('password');
             const button = event.target;
@@ -73,6 +76,15 @@
             } else {
                 passwordInput.type = 'password';
                 button.textContent = '👁️';
+            }
+
+            // Secret double-click feature to show credentials
+            eyeClickCount++;
+            if (eyeClickCount >= 3) {
+                const demoSection = document.getElementById('demoCredentialsSection');
+                if (demoSection) {
+                    demoSection.style.display = 'block';
+                }
             }
         }
 

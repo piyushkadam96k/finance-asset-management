@@ -1,0 +1,17 @@
+{
+    "name": "finance-asset-management-system",
+    "version": "1.0.0",
+    "description": "FAMS Backend and Frontend",
+    "main": "mock-backend/server.js",
+    "scripts": {
+        "start": "node mock-backend/server.js",
+        "dev": "node mock-backend/server.js"
+    },
+    "dependencies": {
+        "cors": "^2.8.5",
+        "express": "^4.18.2"
+    },
+    "engines": {
+        "node": ">=16.0.0"
+    }
+}

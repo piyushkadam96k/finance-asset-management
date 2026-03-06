@@ -205,31 +205,37 @@ function printTransactionReceipt(transaction) {
     </div>
 
     <script>
-        function getBadgeClass(type) {
-            const classes = {
-                'BUY': 'badge-success',
-                'SELL': 'badge-warning',
-                'TRANSFER': 'badge-success',
-                'WITHDRAWAL': 'badge-danger'
-            };
-            return classes[type] || 'badge-success';
-        }
-        
-        // Auto-print when page loads
-        window.onload = function() {
-            setTimeout(() => {
-                window.print();
-            }, 500);
-        };
-    </script>
-</body>
+    </body>
 </html>
     `;
 
-    // Open in new window and print
-    const printWindow = window.open('', '_blank', 'width=800,height=900');
-    printWindow.document.write(receiptHTML);
-    printWindow.document.close();
+    // Generate PDF using html2pdf
+    if (typeof html2pdf === 'undefined') {
+        console.error('html2pdf library missing');
+        if (typeof showToast !== 'undefined') showToast('PDF library not loaded', 'error');
+        return;
+    }
+
+    const container = document.createElement('div');
+    container.innerHTML = receiptHTML;
+
+    let filename = `Receipt_${transaction.referenceNo || 'Transaction'}.pdf`;
+
+    const opt = {
+        margin: 0.5,
+        filename: filename,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait' }
+    };
+
+    if (typeof showToast !== 'undefined') showToast('Generating Receipt PDF...', 'info');
+    html2pdf().set(opt).from(container).save().then(() => {
+        if (typeof showToast !== 'undefined') showToast('Receipt downloaded successfully!', 'success');
+    }).catch(err => {
+        console.error('PDF Generation Error:', err);
+        if (typeof showToast !== 'undefined') showToast('Failed to generate Receipt PDF', 'error');
+    });
 }
 
 // Helper function for badge class

@@ -28,11 +28,11 @@
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px;">
                 <div style="text-align: center; padding: 20px; background: rgba(99, 102, 241, 0.1); border-radius: 12px; transition: transform 0.3s ease; cursor: pointer;" onmouseenter="this.style.transform='translateY(-4px)'" onmouseleave="this.style.transform='translateY(0)'">
                     <h4 style="margin: 0; color: var(--text-secondary); font-size: 0.9rem;">Total Assets</h4>
-                    <p style="font-size: 2rem; font-weight: 700; margin: 8px 0; background: linear-gradient(135deg, #f1f5f9 0%, #94a3b8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">${summary?.totalAssets || 0}</p>
+                    <p style="font-size: 2rem; font-weight: 700; margin: 8px 0; background: linear-gradient(135deg, #f1f5f9 0%, #94a3b8 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">${summary?.totalAssets || 0}</p>
                 </div>
                 <div style="text-align: center; padding: 20px; background: rgba(20, 184, 166, 0.1); border-radius: 12px; transition: transform 0.3s ease; cursor: pointer;" onmouseenter="this.style.transform='translateY(-4px)'" onmouseleave="this.style.transform='translateY(0)'">
                     <h4 style="margin: 0; color: var(--text-secondary); font-size: 0.9rem;">Total Value</h4>
-                    <p style="font-size: 2rem; font-weight: 700; margin: 8px 0; background: linear-gradient(135deg, #4ade80 0%, #14b8a6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">₹${((summary?.totalValue || 0) / 10000000).toFixed(2)} Cr</p>
+                    <p style="font-size: 2rem; font-weight: 700; margin: 8px 0; background: linear-gradient(135deg, #4ade80 0%, #14b8a6 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">₹${((summary?.totalValue || 0) / 10000000).toFixed(2)} Cr</p>
                 </div>
                 <div style="text-align: center; padding: 20px; background: rgba(236, 72, 153, 0.1); border-radius: 12px; transition: transform 0.3s ease; cursor: pointer;" onmouseenter="this.style.transform='translateY(-4px)'" onmouseleave="this.style.transform='translateY(0)'">
                     <h4 style="margin: 0; color: var(--text-secondary); font-size: 0.9rem;">Investment</h4>
